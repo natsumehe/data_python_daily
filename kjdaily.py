@@ -13,7 +13,7 @@ data = {
 
 #更改这里的数据即可，这里的数据主要是爬取网页的数量，不是最终的数据。
 #最终的数据<=count*8*2
-Count = 10
+Count = 365 *5
 Current = datetime.now()
 counts = timedelta(days=Count)
 past = Current - counts
@@ -21,7 +21,7 @@ while past <= Current:
     
     past += timedelta(days=1)
     formatted_date =past.strftime("%Y-%m/%d")
-    # print("time",formatted_date)
+    print("time",formatted_date)
     
     naviurl = f"http://digitalpaper.stdaily.com/http_www.kjrb.com/kjrb/html/{formatted_date}/node_2.htm"
     naviresponse = requests.get(naviurl)
@@ -65,10 +65,17 @@ while past <= Current:
                     html_content = response.content.decode("utf-8", errors="ignore")
                     soup = BeautifulSoup(html_content, 'lxml')
 
-                    title = soup.find('div', class_='biaoti').text.strip()
+                    title = soup.find('div', class_='biaoti')
+                    if title is not  None:
+                        title = soup.find('div', class_='biaoti').text.strip()
 
-                    content = soup.find('div', class_='article').get_text(strip=True)
-
+                    content = soup.find('div', class_='article')
+                    if content is not None:
+                        content = soup.find('div', class_='article').get_text(strip=True)
+                        pattern = r'^广 告'
+                        content_no_ads = re.sub(pattern, '', content)
+                        
+                        
                     data["ID"].append(formatted_date + "_" + number)
                     data["title"].append(title)
                     data["input_content"].append(content)
