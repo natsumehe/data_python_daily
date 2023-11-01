@@ -13,7 +13,7 @@ data = {
 
 #更改这里的数据即可，这里的数据主要是爬取网页的数量，不是最终的数据。
 #最终的数据<=count*8*2
-Count = 365 *5
+Count = 365*3
 Current = datetime.now()
 counts = timedelta(days=Count)
 past = Current - counts
@@ -86,8 +86,8 @@ while past <= Current:
                 # print("内容：", content)
 
         df = pd.DataFrame(data)
-        df.to_excel("keji.xlsx", index=False)
-        df_from_excel = pd.read_excel("keji.xlsx")
+        df.to_excel("新建.xlsx", index=False)
+        df_from_excel = pd.read_excel("新建.xlsx")
         num_rows = df_from_excel.shape[0]
 
 print(f'科技日报爬取完成，共爬取【{num_rows}】条数据')
